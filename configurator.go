@@ -34,7 +34,7 @@ func InitConfig(filePath string, defaultConfig Config) error {
 	
 
     // Start a Goroutine for periodic configuration refresh.
-    go periodicallyRefreshConfig(filePath)
+    // go periodicallyRefreshConfig(filePath)
 
     return nil
 }
@@ -51,6 +51,7 @@ func periodicallyRefreshConfig(filePath string) {
 
 // GetConfig returns the current configuration.
 func GetConfig() Config {
+	readConfigFile(filePath)
     configLock.RLock()
     defer configLock.RUnlock()
     return config

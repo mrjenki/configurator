@@ -138,3 +138,35 @@ func fileLock(file *os.File) error {
 func fileUnlock(file *os.File) error {
     return syscall.Flock(int(file.Fd()), syscall.LOCK_UN)
 }
+// UpdateKey updates the value of an existing key in the configuration.
+func UpdateKey(key string, value interface{}) error {
+    configLock.Lock()
+    defer configLock.Unlock()
+
+    // Check if the key exists in the configuration.
+    if _, exists := config[key]; !exists {
+        return fmt.Errorf("key '%s' does not exist in the configuration", key)
+    }
+
+    // Update the value of the key.
+    config[key] = value
+
+    // Update the configuration in the file.
+    return writeConfigToFile(filePath, config)
+}
+// AddKey adds a new key-value pair to the configuration.
+func AddKey(key string, value interface{}) error {
+    configLock.Lock()
+    defer configLock.Unlock()
+
+    // Check if the key already exists in the configuration.
+    if _, exists := config[key]; exists {
+        return fmt.Errorf("key '%s' already exists in the configuration", key)
+    }
+
+    // Add the new key-value pair to the configuration.
+    config[key] = value
+
+    // Update the configuration in the file.
+    return writeConfigToFile(filePath, config)
+}

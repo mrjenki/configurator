@@ -200,7 +200,7 @@ func readConfigFile(filePath string) error {
 		return err
 	}
 	//write data to console
-	fmt.Println(string(tempConfig))
+	// fmt.Println(string(tempConfig))
     
 
     // Update the in-memory configuration in a thread-safe way.

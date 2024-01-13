@@ -170,3 +170,23 @@ func AddKey(key string, value interface{}) error {
     // Update the configuration in the file.
     return writeConfigToFile(filePath, config)
 }
+func readConfigFile(filePath string) error {
+    // Read the JSON configuration file.
+    data, err := ioutil.ReadFile(filePath)
+    if err != nil {
+        return err
+    }
+
+    // Parse the JSON data into a temporary configuration.
+    var tempConfig Config
+    if err := json.Unmarshal(data, &tempConfig); err != nil {
+        return err
+    }
+
+    // Update the in-memory configuration in a thread-safe way.
+    configLock.Lock()
+    config = tempConfig
+    configLock.Unlock()
+
+    return nil
+}

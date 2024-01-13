@@ -1,16 +1,16 @@
 package configmodule
 
 import (
-    "encoding/json"
-    "io/ioutil"
-    "os"
-    "sync"
-    "syscall"
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
+	"os"
+	"sync"
+	"syscall"
 )
 
 // Config represents your application's configuration as key-value pairs.
-type Config map[string]interface{}
+type Config map[string]string
 
 var (
     config     Config
@@ -130,7 +130,7 @@ func fileUnlock(file *os.File) error {
     return syscall.Flock(int(file.Fd()), syscall.LOCK_UN)
 }
 // UpdateKey updates the value of an existing key in the configuration.
-func UpdateKey(key string, value interface{}) error {
+func UpdateKey(key string, value string) error {
     configLock.Lock()
     defer configLock.Unlock()
 
@@ -170,7 +170,7 @@ func HasKey(key string) bool {
 	return exists
 }
 // AddKey adds a new key-value pair to the configuration.
-func AddKey(key string, value interface{}) error {
+func AddKey(key string, value string) error {
     configLock.Lock()
     defer configLock.Unlock()
 

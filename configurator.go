@@ -31,6 +31,7 @@ func InitConfig(filePath string, defaultConfig Config) error {
     if err := readConfigFile(filePath); err != nil {
         return err
     }
+	
 
     // Start a Goroutine for periodic configuration refresh.
     go periodicallyRefreshConfig(filePath)
@@ -199,7 +200,7 @@ func readConfigFile(filePath string) error {
 		return err
 	}
 	//write data to console
-	fmt.Println(string(data))
+	fmt.Println(string(tempConfig))
     
 
     // Update the in-memory configuration in a thread-safe way.

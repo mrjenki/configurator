@@ -172,17 +172,35 @@ func AddKey(key string, value interface{}) error {
     return writeConfigToFile(filePath, config)
 }
 func readConfigFile(filePath string) error {
-    // Read the JSON configuration file.
-    data, err := ioutil.ReadFile(filePath)
-    if err != nil {
-        return err
-    }
-	fmt.Println(data)
-    // Parse the JSON data into a temporary configuration.
-    var tempConfig Config
-    if err := json.Unmarshal(data, &tempConfig); err != nil {
-        return err
-    }
+    // check if the file exists
+	_, err := os.Stat(filePath)
+	if err != nil {
+		return err
+	}
+	// open the file with read-only access
+	file, err := os.Open(filePath)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+	// acquire a shared lock on the file for reading
+	if err := fileLock(file); err != nil {
+		return err
+	}
+	defer fileUnlock(file)
+	// read the file content to variable data
+	data, err := ioutil.ReadAll(file)
+	if err != nil {
+		return err
+	}
+	// unmarshal the data to a temporary configuration variable
+	var tempConfig Config
+	if err := json.Unmarshal(data, &tempConfig); err != nil {
+		return err
+	}
+	//write data to console
+	fmt.Println(string(data))
+    
 
     // Update the in-memory configuration in a thread-safe way.
     configLock.Lock()

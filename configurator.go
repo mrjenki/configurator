@@ -32,21 +32,10 @@ func InitConfig(filePath string, defaultConfig Config) error {
     }
 	
 
-    // Start a Goroutine for periodic configuration refresh.
-    // go periodicallyRefreshConfig(filePath)
 
     return nil
 }
 
-// periodicallyRefreshConfig refreshes the configuration periodically.
-// func periodicallyRefreshConfig(filePath string) {
-//     ticker := time.NewTicker(time.Minute)
-
-//     for range ticker.C {
-//         // Read and update the configuration in a thread-safe manner.
-//         readConfigFile(filePath)
-//     }
-// }
 
 // GetConfig returns the current configuration.
 func GetConfig() Config {

@@ -19,10 +19,8 @@ var (
 )
 
 // InitConfig initializes the configuration with the given filePath and creates the file if it doesn't exist.
-func InitConfig(filePath string) error {
-	 // Add the "version" key with the value "1.0" to the default configuration.
-	 defaultConfig["version"] = "1.0"
-    if err := ensureConfigFile(filePath, defaultConfig); err != nil {
+func InitConfig(filePath string, defaultConfig Config) error {
+     if err := ensureConfigFile(filePath, defaultConfig); err != nil {
         return err
     }
 

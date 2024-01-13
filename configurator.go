@@ -177,7 +177,7 @@ func readConfigFile(filePath string) error {
     if err != nil {
         return err
     }
-
+	fmt.Println(data)
     // Parse the JSON data into a temporary configuration.
     var tempConfig Config
     if err := json.Unmarshal(data, &tempConfig); err != nil {

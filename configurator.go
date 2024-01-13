@@ -145,6 +145,30 @@ func UpdateKey(key string, value interface{}) error {
     // Update the configuration in the file.
     return writeConfigToFile(filePath, config)
 }
+// DeleteKey deletes a key-value pair from the configuration.
+func DeleteKey(key string) error {
+	configLock.Lock()
+	defer configLock.Unlock()
+
+	// Check if the key exists in the configuration.
+	if _, exists := config[key]; !exists {
+		return fmt.Errorf("key '%s' does not exist in the configuration", key)
+	}
+
+	// Delete the key-value pair from the configuration.
+	delete(config, key)
+
+	// Update the configuration in the file.
+	return writeConfigToFile(filePath, config)
+}
+//HasKey checks if a key exists in the configuration.
+func HasKey(key string) bool {
+	configLock.RLock()
+	defer configLock.RUnlock()
+
+	_, exists := config[key]
+	return exists
+}
 // AddKey adds a new key-value pair to the configuration.
 func AddKey(key string, value interface{}) error {
     configLock.Lock()

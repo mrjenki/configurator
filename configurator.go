@@ -3,7 +3,7 @@ package configmodule
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"os"
 	"sync"
 	"syscall"
@@ -76,7 +76,7 @@ func writeDefaultConfig(filePath string, defaultConfig Config) error {
         return err
     }
 
-    err = ioutil.WriteFile(filePath, data, 0644)
+    err = os.WriteFile(filePath, data, 0644)
     if err != nil {
         return err
     }
@@ -106,7 +106,7 @@ func writeConfigToFile(filePath string, updatedConfig Config) error {
 
     // Write the updated configuration to the file atomically.
     tmpFile := filePath + ".tmp" // Temporary file.
-    if err := ioutil.WriteFile(tmpFile, data, 0644); err != nil {
+    if err := os.WriteFile(tmpFile, data, 0644); err != nil {
         return err
     }
 
@@ -203,7 +203,7 @@ func readConfigFile(filePath string) error {
 	}
 	defer fileUnlock(file)
 	// read the file content to variable data
-	data, err := ioutil.ReadAll(file)
+	data, err := io.ReadAll(file)
 	if err != nil {
 		return err
 	}

@@ -20,7 +20,8 @@ var (
 
 // InitConfig initializes the configuration with the given filePath and creates the file if it doesn't exist.
 func InitConfig(file_Path string, defaultConfig Config) error {
-     if err := ensureConfigFile(filePath, defaultConfig); err != nil {
+     if err := ensureConfigFile(file_Path, defaultConfig); err != nil {
+        fmt.Println(err)
         return err
     }
 
@@ -80,6 +81,7 @@ func writeDefaultConfig(filePath string, defaultConfig Config) error {
 
     err = os.WriteFile(filePath, data, 0644)
     if err != nil {
+        fmt.Println(err)
         return err
     }
 

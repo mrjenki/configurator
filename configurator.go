@@ -19,13 +19,13 @@ var (
 )
 
 // InitConfig initializes the configuration with the given filePath and creates the file if it doesn't exist.
-func InitConfig(filePath string, defaultConfig Config) error {
+func InitConfig(file_Path string, defaultConfig Config) error {
      if err := ensureConfigFile(filePath, defaultConfig); err != nil {
         return err
     }
 
     // Store the filePath for configuration updates.
-    filePath = filePath
+    filePath = file_Path
 
     if err := readConfigFile(filePath); err != nil {
         return err

@@ -90,12 +90,16 @@ func writeConfigToFile(filePath string, updatedConfig Config) error {
     // Open the file with write access and create it if it doesn't exist.
     file, err := os.OpenFile(filePath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
     if err != nil {
+        fmt.Println(err)
+        fmt.Println("Error in opening file "+filePath)
         return err
     }
     defer file.Close()
 
     // Acquire an exclusive lock on the file for writing.
     if err := fileLock(file); err != nil {
+        fmt.Println(err)
+        fmt.Println("Error in locking file "+filePath)
         return err
     }
     defer fileUnlock(file)
@@ -109,12 +113,16 @@ func writeConfigToFile(filePath string, updatedConfig Config) error {
     // Write the updated configuration to the file atomically.
     tmpFile := filePath + ".tmp" // Temporary file.
     if err := os.WriteFile(tmpFile, data, 0644); err != nil {
+        fmt.Println(err)
+        fmt.Println("Error in writing tmp file "+tmpFile)
         return err
     }
 
     // Rename the temporary file to replace the original file atomically.
     if err := os.Rename(tmpFile, filePath); err != nil {
         // Cleanup the temporary file if the rename fails.
+        fmt.Println(err)
+        fmt.Println("Error in rename tmp file "+tmpFile)
         os.Remove(tmpFile)
         return err
     }

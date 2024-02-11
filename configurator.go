@@ -39,9 +39,11 @@ func InitConfig(filePath string, defaultConfig Config) error {
 
 // GetConfig returns the current configuration.
 func GetConfig() Config {
-	readConfigFile(filePath)
-    configLock.RLock()
-    defer configLock.RUnlock()
+	err:=readConfigFile(filePath)
+    if err != nil {
+        fmt.Println(err)
+    }
+   
     return config
 }
 

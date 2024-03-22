@@ -85,15 +85,11 @@ func readConfigFile() error {
 	if err != nil {
 		return err
 	}
-	// log the response body
-	fmt.Println(string(body))
 	// Parse the response body
 	err = parseJSON(string(body))
 	if err != nil {
 		return err
 	}
-	// log the configuration
-	fmt.Println(config)
 
 	return nil
 }

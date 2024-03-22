@@ -1,6 +1,7 @@
 package configmodule
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
@@ -13,6 +14,35 @@ type Config map[string]string
 var (
 	config Config
 )
+
+type Item struct {
+	Key   string `json:"key"`
+	Value string `json:"value"`
+}
+
+type Data struct {
+	Items []Item `json:"item"`
+}
+
+type JSONData struct {
+	Data Data `json:"data"`
+}
+
+func parseJSON(jsonStr string) error {
+	var jsonData JSONData
+
+	err := json.Unmarshal([]byte(jsonStr), &jsonData)
+	if err != nil {
+		return err
+	}
+
+	config = make(Config)
+	for _, item := range jsonData.Data.Items {
+		config[item.Key] = item.Value
+	}
+
+	return nil
+}
 
 // InitConfig initializes the configuration with the given filePath and creates the file if it doesn't exist.
 func InitConfig(file_Path string, defaultConfig Config) error {
@@ -57,6 +87,13 @@ func readConfigFile() error {
 	}
 	// log the response body
 	fmt.Println(string(body))
+	// Parse the response body
+	err = parseJSON(string(body))
+	if err != nil {
+		return err
+	}
+	// log the configuration
+	fmt.Println(config)
 
 	return nil
 }

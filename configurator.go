@@ -48,6 +48,7 @@ func parseJSON(jsonStr string) error {
 // InitConfig initializes the configuration with the given filePath and creates the file if it doesn't exist.
 func InitConfig(file_Path string, defaultConfig_i Config) error {
 	defaultConfig = defaultConfig_i
+	config = nil
 	return nil
 }
 

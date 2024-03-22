@@ -38,8 +38,10 @@ func readConfigFile() error {
 	if err != nil {
 		return err
 	}
+	// add content type to the request
+	req.Header.Add("Content-Type", "application/json")
 	// add authorization header to the request
-	req.Header.Add("Authorization: ", auth)
+	req.Header.Add("Authorization", auth)
 	// Send http request
 	client := &http.Client{}
 	resp, err := client.Do(req)

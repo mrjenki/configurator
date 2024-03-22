@@ -58,3 +58,8 @@ func readConfigFile() error {
 
 	return nil
 }
+func HasKey(key string) bool {
+
+	_, exists := config[key]
+	return exists
+}

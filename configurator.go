@@ -56,8 +56,14 @@ func GetConfig() Config {
 	err := readConfigFile()
 	if err != nil {
 		fmt.Println(err)
-		fmt.Println("Using default configuration")
-		return defaultConfig
+		// if config variable is nil, return the default config
+		if config == nil {
+			fmt.Println("Using default config")
+			return defaultConfig
+		} else {
+			fmt.Println("Using staled config")
+			return config
+		}
 	}
 
 	return config

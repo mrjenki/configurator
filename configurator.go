@@ -12,7 +12,8 @@ import (
 type Config map[string]string
 
 var (
-	config Config
+	config        Config
+	defaultConfig Config
 )
 
 type Item struct {
@@ -45,7 +46,8 @@ func parseJSON(jsonStr string) error {
 }
 
 // InitConfig initializes the configuration with the given filePath and creates the file if it doesn't exist.
-func InitConfig(file_Path string, defaultConfig Config) error {
+func InitConfig(file_Path string, defaultConfig_i Config) error {
+	defaultConfig = defaultConfig_i
 	return nil
 }
 
@@ -54,6 +56,8 @@ func GetConfig() Config {
 	err := readConfigFile()
 	if err != nil {
 		fmt.Println(err)
+		fmt.Println("Using default configuration")
+		return defaultConfig
 	}
 
 	return config

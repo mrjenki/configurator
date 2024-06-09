@@ -78,7 +78,7 @@ func readConfigFile() error {
 	// Create a new request using http
 	req, err := http.NewRequest("GET", endpoint, nil)
 	if err != nil {
-		elog("Error creating HTTP request:", err)
+		// elog("Error creating HTTP request:", err)
 		return err
 	}
 	// add content type to the request

@@ -109,6 +109,7 @@ func readConfigFile() error {
 		fmt.Println("Error reading response body:", err)
 		return err
 	}
+	fmt.Println(string(body))
 	// Parse the response body
 	err = parseJSON(string(body))
 	if err != nil {

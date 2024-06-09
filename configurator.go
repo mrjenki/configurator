@@ -1,7 +1,6 @@
 package configmodule
 
 import (
-	"crypto/tls"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -74,16 +73,12 @@ func GetConfig() Config {
 
 func readConfigFile() error {
 	core_host := os.Getenv("CORE_HOST")
-	endpoint := core_host + "/api/buffer-configuration?populate=*"
+	endpoint := "http://" + core_host + "/api/buffer-configuration?populate=*"
 	auth := "Bearer " + os.Getenv("CORE_TOKEN")
 	// Create a new request using http
 	req, err := http.NewRequest("GET", endpoint, nil)
-	tr := &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-	}
-	// req, err := http.NewRequest("GET", endpoint, nil)
 	if err != nil {
-		fmt.Println("Error creating HTTP request:", err)
+		elog("Error creating HTTP request:", err)
 		return err
 	}
 	// add content type to the request
@@ -92,13 +87,11 @@ func readConfigFile() error {
 	req.Header.Add("Authorization", auth)
 	// Send http request with timeout
 	client := &http.Client{
-		Timeout:   10 * time.Second, // Add a timeout to the client
-		Transport: tr,
+		Timeout: 10 * time.Second, // Add a timeout to the client
 	}
 	resp, err := client.Do(req)
 	if err != nil {
-		fmt.Println("Error sending HTTP request:", err)
-
+		elog("Error sending HTTP request:", err)
 		return err
 	}
 	// Close the response body
@@ -106,14 +99,13 @@ func readConfigFile() error {
 	// Read the response body
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		fmt.Println("Error reading response body:", err)
+		elog("Error reading response body:", err)
 		return err
 	}
-	fmt.Println(string(body))
 	// Parse the response body
 	err = parseJSON(string(body))
 	if err != nil {
-		fmt.Println("Error parsing JSON:", err)
+		elog("Error parsing JSON response:", err)
 		return err
 	}
 

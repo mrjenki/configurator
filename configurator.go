@@ -83,7 +83,7 @@ func readConfigFile() error {
 	}
 	// req, err := http.NewRequest("GET", endpoint, nil)
 	if err != nil {
-		// elog("Error creating HTTP request:", err)
+		fmt.Println("Error creating HTTP request:", err)
 		return err
 	}
 	// add content type to the request
@@ -97,7 +97,8 @@ func readConfigFile() error {
 	}
 	resp, err := client.Do(req)
 	if err != nil {
-		// elog("Error sending HTTP request:", err)
+		fmt.Println("Error sending HTTP request:", err)
+
 		return err
 	}
 	// Close the response body
@@ -105,13 +106,13 @@ func readConfigFile() error {
 	// Read the response body
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		// elog("Error reading response body:", err)
+		fmt.Println("Error reading response body:", err)
 		return err
 	}
 	// Parse the response body
 	err = parseJSON(string(body))
 	if err != nil {
-		// elog("Error parsing JSON response:", err)
+		fmt.Println("Error parsing JSON:", err)
 		return err
 	}
 

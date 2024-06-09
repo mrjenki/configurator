@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"time"
 )
 
 // Config represents your application's configuration as key-value pairs.
@@ -72,21 +73,25 @@ func GetConfig() Config {
 
 func readConfigFile() error {
 	core_host := os.Getenv("CORE_HOST")
-	endpoint := "http://" + core_host + "/api/buffer-configuration?populate=*"
+	endpoint := core_host + "/api/buffer-configuration?populate=*"
 	auth := "Bearer " + os.Getenv("CORE_TOKEN")
 	// Create a new request using http
 	req, err := http.NewRequest("GET", endpoint, nil)
 	if err != nil {
+		elog("Error creating HTTP request:", err)
 		return err
 	}
 	// add content type to the request
 	req.Header.Add("Content-Type", "application/json")
 	// add authorization header to the request
 	req.Header.Add("Authorization", auth)
-	// Send http request
-	client := &http.Client{}
+	// Send http request with timeout
+	client := &http.Client{
+		Timeout: 10 * time.Second, // Add a timeout to the client
+	}
 	resp, err := client.Do(req)
 	if err != nil {
+		elog("Error sending HTTP request:", err)
 		return err
 	}
 	// Close the response body
@@ -94,11 +99,13 @@ func readConfigFile() error {
 	// Read the response body
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
+		elog("Error reading response body:", err)
 		return err
 	}
 	// Parse the response body
 	err = parseJSON(string(body))
 	if err != nil {
+		elog("Error parsing JSON response:", err)
 		return err
 	}
 

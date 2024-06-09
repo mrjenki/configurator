@@ -91,7 +91,7 @@ func readConfigFile() error {
 	}
 	resp, err := client.Do(req)
 	if err != nil {
-		elog("Error sending HTTP request:", err)
+		// elog("Error sending HTTP request:", err)
 		return err
 	}
 	// Close the response body
@@ -99,13 +99,13 @@ func readConfigFile() error {
 	// Read the response body
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		elog("Error reading response body:", err)
+		// elog("Error reading response body:", err)
 		return err
 	}
 	// Parse the response body
 	err = parseJSON(string(body))
 	if err != nil {
-		elog("Error parsing JSON response:", err)
+		// elog("Error parsing JSON response:", err)
 		return err
 	}
 

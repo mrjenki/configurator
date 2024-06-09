@@ -91,7 +91,7 @@ func readConfigFile() error {
 	// add authorization header to the request
 	req.Header.Add("Authorization", auth)
 	// Send http request with timeout
-	client = &http.Client{
+	client := &http.Client{
 		Timeout:   10 * time.Second, // Add a timeout to the client
 		Transport: tr,
 	}

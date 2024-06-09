@@ -77,6 +77,10 @@ func readConfigFile() error {
 	auth := "Bearer " + os.Getenv("CORE_TOKEN")
 	// Create a new request using http
 	req, err := http.NewRequest("GET", endpoint, nil)
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+	// req, err := http.NewRequest("GET", endpoint, nil)
 	if err != nil {
 		// elog("Error creating HTTP request:", err)
 		return err
@@ -86,8 +90,9 @@ func readConfigFile() error {
 	// add authorization header to the request
 	req.Header.Add("Authorization", auth)
 	// Send http request with timeout
-	client := &http.Client{
+	client = &http.Client{
 		Timeout: 10 * time.Second, // Add a timeout to the client
+		Transport: tr
 	}
 	resp, err := client.Do(req)
 	if err != nil {

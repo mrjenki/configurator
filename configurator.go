@@ -1,6 +1,7 @@
 package configmodule
 
 import (
+	"crypto/tls"
 	"encoding/json"
 	"fmt"
 	"io"

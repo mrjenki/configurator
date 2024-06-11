@@ -73,7 +73,7 @@ func GetConfig() Config {
 
 func readConfigFile() error {
 	core_host := os.Getenv("CORE_HOST")
-	endpoint := "http://" + core_host + "/api/buffer-configuration?populate=*"
+	endpoint := "https://" + core_host + "/api/buffer-configuration?populate=*"
 	auth := "Bearer " + os.Getenv("CORE_TOKEN")
 	// Create a new request using http
 	req, err := http.NewRequest("GET", endpoint, nil)

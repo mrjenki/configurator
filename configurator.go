@@ -1,6 +1,7 @@
 package configmodule
 
 import (
+	"crypto/tls"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -88,6 +89,9 @@ func readConfigFile() error {
 	// Send http request with timeout
 	client := &http.Client{
 		Timeout: 10 * time.Second, // Add a timeout to the client
+		Transport: &http.Transport{
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+		},
 	}
 	resp, err := client.Do(req)
 	if err != nil {
